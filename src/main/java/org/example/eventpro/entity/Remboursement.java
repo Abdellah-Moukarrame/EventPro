@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @Table(name = "remboursements")
@@ -26,14 +26,13 @@ public class Remboursement {
     private String motif;
 
     @Column(nullable = false)
-    private LocalDateTime dateDemande;
+    private Instant dateDemande;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private StatutRemboursement statut =
             StatutRemboursement.PENDING;
 
-    // Plusieurs remboursements -> un paiement
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "paiement_id", nullable = false)
     private Paiement paiement;

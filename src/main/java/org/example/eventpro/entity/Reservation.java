@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,10 +25,10 @@ public class Reservation {
     private String reference;
 
     @Column(nullable = false)
-    private LocalDateTime dateCreation;
+    private Instant dateCreation;
 
     @Column(nullable = false)
-    private LocalDateTime dateExpiration;
+    private Instant dateExpiration;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -38,17 +38,14 @@ public class Reservation {
     @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal montantTotal;
 
-    // Plusieurs réservations -> un client
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 
-    // Plusieurs réservations -> une promotion (optionnelle)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "promotion_id")
     private Promotion promotion;
 
-    // Une réservation -> plusieurs lignes
     @OneToMany(
             mappedBy = "reservation",
             cascade = CascadeType.ALL,
@@ -56,8 +53,6 @@ public class Reservation {
     )
     private List<LigneReservation> lignesReservation =
             new ArrayList<>();
-
-
 
     @OneToOne(mappedBy = "reservation", fetch = FetchType.LAZY)
     private Paiement paiement;

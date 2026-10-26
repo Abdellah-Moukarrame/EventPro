@@ -5,7 +5,7 @@ import org.example.eventpro.enums.StatutEvenement;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,16 +30,16 @@ public class Evenement {
     private String lieu;
 
     @Column(nullable = false)
-    private LocalDateTime dateDebut;
+    private Instant dateDebut;
 
     @Column(nullable = false)
-    private LocalDateTime dateFin;
+    private Instant dateFin;
 
     @Column(nullable = false)
-    private LocalDateTime dateOuvertureVente;
+    private Instant dateOuvertureVente;
 
     @Column(nullable = false)
-    private LocalDateTime dateClotureVente;
+    private Instant dateClotureVente;
 
     @Column(nullable = false)
     private int capacite;
@@ -48,11 +48,9 @@ public class Evenement {
     @Column(nullable = false)
     private StatutEvenement statut = StatutEvenement.DRAFT;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organisateur_id", nullable = false)
     private Organisateur organisateur;
-
 
     @OneToMany(
             mappedBy = "evenement",

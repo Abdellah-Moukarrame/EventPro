@@ -28,17 +28,23 @@ public class LigneReservation {
     @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal sousTotal;
 
-    // Plusieurs lignes -> une réservation
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reservation_id", nullable = false)
     private Reservation reservation;
 
-    // Plusieurs lignes -> une catégorie de billet
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "categorie_billet_id", nullable = false)
-    private CategorieBillet categorieBillet;
+    @JoinColumn(
+            name = "categorie_billet_evenement_id",
+            nullable = false
+    )
+    private CategorieBilletEvenement categorieBilletEvenement;
 
-    // Une ligne -> plusieurs billets
     @OneToMany(mappedBy = "ligneReservation")
     private List<Billet> billets = new ArrayList<>();
+
+    public BigDecimal calculerSousTotal() {
+        return prixUnitaire.multiply(
+                BigDecimal.valueOf(quantite)
+        );
+    }
 }
