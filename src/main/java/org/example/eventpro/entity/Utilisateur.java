@@ -9,7 +9,7 @@ import lombok.*;
 @Entity
 @Table(name="utilisateurs")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Utilisateur {
+public abstract class Utilisateur {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
