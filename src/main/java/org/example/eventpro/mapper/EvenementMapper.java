@@ -23,7 +23,7 @@ public interface EvenementMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "organisateur", ignore = true)
     @Mapping(target = "statut", ignore = true)
-    void updateEntity(
+    public void updateEntity(
             EventUpdateRequest request,
             @MappingTarget Evenement evenement
     );

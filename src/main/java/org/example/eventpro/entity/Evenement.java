@@ -13,7 +13,7 @@ import java.util.List;
 @Table(name = "evenements")
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class Evenement {
 
     @Id

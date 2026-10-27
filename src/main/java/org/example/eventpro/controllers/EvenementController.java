@@ -1,4 +1,4 @@
-package org.example.eventpro.controller;
+package org.example.eventpro.controllers;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
