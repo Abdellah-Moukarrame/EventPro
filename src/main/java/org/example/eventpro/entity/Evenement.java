@@ -48,15 +48,28 @@ public class Evenement {
     @Column(nullable = false)
     private StatutEvenement statut = StatutEvenement.DRAFT;
 
+    // Plusieurs événements peuvent appartenir à un organisateur
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organisateur_id", nullable = false)
     private Organisateur organisateur;
 
+    // Un événement possède plusieurs catégories de billets
+    // avec leurs propres prix, stocks et quotas
     @OneToMany(
             mappedBy = "evenement",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<CategorieBillet> categories =
-            new ArrayList<>();
+    private List<CategorieBilletEvenement> categories = new ArrayList<>();
+
+    // Maintenir la cohérence de la relation bidirectionnelle
+    public void ajouterCategorie(CategorieBilletEvenement categorie) {
+        categories.add(categorie);
+        categorie.setEvenement(this);
+    }
+
+    public void supprimerCategorie(CategorieBilletEvenement categorie) {
+        categories.remove(categorie);
+        categorie.setEvenement(null);
+    }
 }
