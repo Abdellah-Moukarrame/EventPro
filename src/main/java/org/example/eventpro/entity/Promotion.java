@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Table(name = "promotions")
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class Promotion {
 
     @Id
