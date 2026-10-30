@@ -1,9 +1,9 @@
-
 package org.example.eventpro.service.impl;
 
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.example.eventpro.dto.request.PromotionUpdateRequest;
 import org.example.eventpro.dto.request.PromotionCreateRequest;
+import org.example.eventpro.dto.request.PromotionUpdateRequest;
 import org.example.eventpro.dto.response.PromotionResponseDTO;
 import org.example.eventpro.entity.Evenement;
 import org.example.eventpro.entity.Promotion;
@@ -15,7 +15,6 @@ import org.example.eventpro.repository.EvenementRepository;
 import org.example.eventpro.repository.PromotionRepository;
 import org.example.eventpro.service.PromotionService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -24,30 +23,19 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 public class PromotionServiceImpl implements PromotionService {
-
     private final PromotionRepository promotionRepository;
-    private final EvenementRepository evenementRepository;
-    private final PromotionMapper promotionMapper;
-
+    private final EvenementRepository evenementRepository ;
+    private final PromotionMapper promotionMapper ;
     @Override
     public PromotionResponseDTO create(PromotionCreateRequest request) {
-
-        // 1. Vérifier que l'événement existe
-        Evenement evenement = evenementRepository
-                .findById(request.evenementId())
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Événement introuvable : " + request.evenementId()
-                ));
-
-        // 2. Vérifier l'unicité du code pour cet événement
-        if (promotionRepository.existsByEvenementIdAndCode(
-                evenement.getId(), request.code())) {
+        Evenement evenement = evenementRepository.findById(request.evenementId()).orElseThrow(()->new ResourceNotFoundException(
+                "event not found : " + request.evenementId()
+        ));
+        if(promotionRepository.existsByEvenementIdAndCode(evenement.getId(), request.code())){
             throw new BusinessException(
-                    "Ce code promotionnel existe déjà pour cet événement"
+                    "this promotion already exsist with this code "
             );
         }
-
-        // 3. Valider les règles métier
         validerPromotion(
                 request.typeReduction(),
                 request.valeurReduction(),
@@ -56,17 +44,13 @@ public class PromotionServiceImpl implements PromotionService {
                 request.limiteUtilisation()
         );
 
-        // 4. Convertir le DTO en entité
         Promotion promotion = promotionMapper.toEntity(request);
-
-        // 5. Associer l'événement
         promotion.setEvenement(evenement);
         promotion.setNombreUtilisations(0);
-
-        // 6. Enregistrer la promotion
         Promotion saved = promotionRepository.save(promotion);
+        return promotionMapper.toDTO(saved) ;
 
-        return promotionMapper.toDTO(saved);
+
     }
 
     @Override
@@ -88,17 +72,17 @@ public class PromotionServiceImpl implements PromotionService {
         if (request.limiteUtilisation()
                 < promotion.getNombreUtilisations()) {
             throw new BusinessException(
-                    "La limite ne peut pas être inférieure au nombre d'utilisations"
+                    "the limit shouldn't be begger than number of users reserved "
             );
         }
 
         // Vérifier si le nouveau code est déjà utilisé
         if (!promotion.getCode().equals(request.code())
                 && promotionRepository.existsByEvenementIdAndCode(
-                        promotion.getEvenement().getId(),
-                        request.code())) {
+                promotion.getEvenement().getId(),
+                request.code())) {
             throw new BusinessException(
-                    "Ce code existe déjà pour cet événement"
+                    "this code alreday for this event"
             );
         }
 
@@ -163,7 +147,7 @@ public class PromotionServiceImpl implements PromotionService {
 
         if (typeReduction == TypeReduction.PERCENTAGE
                 && valeurReduction.compareTo(
-                        BigDecimal.valueOf(100)) > 0) {
+                BigDecimal.valueOf(100)) > 0) {
             throw new BusinessException(
                     "Une réduction en pourcentage ne peut pas dépasser 100 %"
             );
