@@ -1,4 +1,8 @@
 package org.example.eventpro.repository;
 
-public class ClientRepository {
+import org.example.eventpro.entity.Client;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ClientRepository extends JpaRepository<Client,Long>{
+
 }
