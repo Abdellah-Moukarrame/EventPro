@@ -47,7 +47,7 @@ public class PromotionController {
         );
     }
 
-    @GetMapping("{/id}")
+    @GetMapping("/{id}")
     @Operation(summary = "Recuperer une promo par id")
     public ResponseEntity<PromotionResponseDTO>findById(@PathVariable Long id){
         return ResponseEntity.ok(promotionService.findById(id));
@@ -58,7 +58,7 @@ public class PromotionController {
         return ResponseEntity.ok(promotionService.findByEvenementId(evenementId));
     }
 
-    @DeleteMapping("{/id}")
+    @DeleteMapping("/{id}")
     @Operation(summary = "supprimer un evenment")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         promotionService.delete(id);

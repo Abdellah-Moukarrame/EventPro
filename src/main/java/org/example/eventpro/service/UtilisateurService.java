@@ -1,6 +1,8 @@
 
 package org.example.eventpro.service;
 
+import jakarta.validation.Valid;
+import org.example.eventpro.dto.request.RegisterRequest;
 import org.example.eventpro.dto.request.UtilisateurUpdateRequest;
 import org.example.eventpro.dto.response.UtilisateurResponseDTO;
 
@@ -22,4 +24,6 @@ public interface UtilisateurService {
 
 
     void delete(Long id);
+
+    UtilisateurResponseDTO register(@Valid RegisterRequest request);
 }

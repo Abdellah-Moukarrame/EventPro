@@ -20,6 +20,8 @@ repositories {
 }
 
 dependencies {
+    // Hashage de password
+    implementation 'org.springframework.security:spring-security-crypto'
     // Postgres SQL
     runtimeOnly 'org.postgresql:postgresql'
     // Spring Boot
@@ -53,6 +55,7 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testRuntimeOnly 'com.h2database:h2'
 }
 
 tasks.named('test') {
