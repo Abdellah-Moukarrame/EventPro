@@ -8,6 +8,7 @@ import org.example.eventpro.entity.Evenement;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring")
 public interface EvenementMapper {
@@ -18,12 +19,18 @@ public interface EvenementMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "organisateur", ignore = true)
     @Mapping(target = "statut", ignore = true)
+    @Mapping(target = "categories", ignore = true)
     Evenement toEntity(EventCreateRequest request);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "organisateur", ignore = true)
-    @Mapping(target = "statut", nullValuePropertyMappingStrategy = org.mapstruct.NullValuePropertyMappingStrategy.IGNORE)
-    public void updateEntity(
+    @Mapping(target = "categories", ignore = true)
+    @Mapping(
+            target = "statut",
+            nullValuePropertyMappingStrategy =
+                    NullValuePropertyMappingStrategy.IGNORE
+    )
+    void updateEntity(
             EventUpdateRequest request,
             @MappingTarget Evenement evenement
     );
