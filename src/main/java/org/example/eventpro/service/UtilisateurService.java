@@ -2,6 +2,7 @@
 package org.example.eventpro.service;
 
 import jakarta.validation.Valid;
+import org.example.eventpro.entity.Utilisateur;
 import org.example.eventpro.dto.request.RegisterRequest;
 import org.example.eventpro.dto.request.UtilisateurUpdateRequest;
 import org.example.eventpro.dto.response.UtilisateurResponseDTO;
@@ -12,6 +13,8 @@ public interface UtilisateurService {
 
 
     List<UtilisateurResponseDTO> findAll();
+
+    List<UtilisateurResponseDTO> findByType(Class<? extends Utilisateur> typeUtilisateur);
 
 
     UtilisateurResponseDTO findById(Long id);
@@ -26,4 +29,8 @@ public interface UtilisateurService {
     void delete(Long id);
 
     UtilisateurResponseDTO register(@Valid RegisterRequest request);
+
+    UtilisateurResponseDTO createOrganisateur(@Valid RegisterRequest request);
+    UtilisateurResponseDTO createAdministrateur(@Valid RegisterRequest request);
+    UtilisateurResponseDTO createAgentControle(@Valid RegisterRequest request);
 }

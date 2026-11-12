@@ -14,7 +14,7 @@ import java.util.List;
 @Table(name = "paiements")
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class Paiement {
 
     @Id

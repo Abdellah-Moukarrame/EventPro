@@ -7,6 +7,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.example.eventpro.dto.request.RegisterRequest;
+import org.example.eventpro.entity.Client;
+import org.example.eventpro.entity.Administrateur;
+import org.example.eventpro.entity.AgentControle;
+import org.example.eventpro.entity.Organisateur;
 import org.example.eventpro.dto.request.UtilisateurUpdateRequest;
 import java.util.List;
 import org.example.eventpro.dto.response.UtilisateurResponseDTO;
@@ -23,10 +27,52 @@ public class UtilisateurController {
 
     private final UtilisateurService utilisateurService;
 
+    @PostMapping("/admin")
+    @ResponseStatus(HttpStatus.CREATED)
+    public UtilisateurResponseDTO createAdmin(@Valid @RequestBody RegisterRequest request) {
+        return utilisateurService.createAdministrateur(request);
+    }
+
+    @PostMapping("/agent")
+    @ResponseStatus(HttpStatus.CREATED)
+    public UtilisateurResponseDTO createAgent(@Valid @RequestBody RegisterRequest request) {
+        return utilisateurService.createAgentControle(request);
+    }
+
+    @PostMapping("/organisateur")
+    @ResponseStatus(HttpStatus.CREATED)
+    public UtilisateurResponseDTO createOrganisateur(@Valid @RequestBody RegisterRequest request) {
+        return utilisateurService.createOrganisateur(request);
+    }
+
     @GetMapping
     @Operation(summary = "Lister les utilisateurs")
     public List<UtilisateurResponseDTO> findAll() {
         return utilisateurService.findAll();
+    }
+
+    @GetMapping("/clients")
+    @Operation(summary = "Lister les clients")
+    public List<UtilisateurResponseDTO> findClients() {
+        return utilisateurService.findByType(Client.class);
+    }
+
+    @GetMapping("/admins")
+    @Operation(summary = "Lister les admins")
+    public List<UtilisateurResponseDTO> findAdmins() {
+        return utilisateurService.findByType(Administrateur.class);
+    }
+
+    @GetMapping("/agents")
+    @Operation(summary = "Lister les agents")
+    public List<UtilisateurResponseDTO> findAgents() {
+        return utilisateurService.findByType(AgentControle.class);
+    }
+
+    @GetMapping("/organisateurs")
+    @Operation(summary = "Lister les organisateurs")
+    public List<UtilisateurResponseDTO> findOrganisateurs() {
+        return utilisateurService.findByType(Organisateur.class);
     }
 
     @GetMapping("/{id}")

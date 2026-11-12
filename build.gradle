@@ -1,8 +1,12 @@
-
 plugins {
     id 'java'
     id 'org.springframework.boot' version '4.1.1'
     id 'io.spring.dependency-management' version '1.1.7'
+
+    // Couverture des tests
+    id 'jacoco'
+    // SonarQube
+    id 'org.sonarqube' version '7.4.0.8496'
 }
 
 group = 'org.example'
@@ -20,16 +24,18 @@ repositories {
 }
 
 dependencies {
-    // Hashage de password
+    // Hashage des mots de passe
     implementation 'org.springframework.security:spring-security-crypto'
-    // Postgres SQL
+
+    // PostgreSQL
     runtimeOnly 'org.postgresql:postgresql'
+
     // Spring Boot
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'
 
-    //Open API (Swagger)
+    // OpenAPI / Swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.2.0'
 
     // Lombok
@@ -50,6 +56,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-validation-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+
     runtimeOnly 'org.postgresql:postgresql'
 
     testCompileOnly 'org.projectlombok:lombok'
@@ -60,4 +67,14 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+// Rapports de couverture JaCoCo
+tasks.named('jacocoTestReport') {
+    dependsOn tasks.named('test')
+
+    reports {
+        xml.required = true
+        html.required = true
+    }
 }

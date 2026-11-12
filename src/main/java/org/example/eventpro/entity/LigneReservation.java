@@ -12,7 +12,7 @@ import java.util.List;
 @Table(name = "lignes_reservation")
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class LigneReservation {
 
     @Id

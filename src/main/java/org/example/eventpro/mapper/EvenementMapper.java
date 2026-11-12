@@ -22,7 +22,7 @@ public interface EvenementMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "organisateur", ignore = true)
-    @Mapping(target = "statut", ignore = true)
+    @Mapping(target = "statut", nullValuePropertyMappingStrategy = org.mapstruct.NullValuePropertyMappingStrategy.IGNORE)
     public void updateEntity(
             EventUpdateRequest request,
             @MappingTarget Evenement evenement

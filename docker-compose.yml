@@ -32,7 +32,32 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: eventpro_jenkins
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+    volumes:
+      - eventpro_jenkins_data:/var/jenkins_home
+
+  sonarqube:
+    image: sonarqube:community
+    container_name: eventpro_sonarqube
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+    environment:
+      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
+    volumes:
+      - eventpro_sonarqube_data:/opt/sonarqube/data
+      - eventpro_sonarqube_logs:/opt/sonarqube/logs
+      - eventpro_sonarqube_extensions:/opt/sonarqube/extensions
 
 volumes:
   eventpro_postgres_data:
   eventpro_pgadmin_data:
+  eventpro_jenkins_data:
+  eventpro_sonarqube_data:
+  eventpro_sonarqube_logs:
+  eventpro_sonarqube_extensions:

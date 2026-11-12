@@ -7,6 +7,7 @@ import org.example.eventpro.dto.response.EventResponseDTO;
 import org.example.eventpro.entity.Evenement;
 import org.example.eventpro.entity.Organisateur;
 import org.example.eventpro.enums.StatutEvenement;
+import org.example.eventpro.exceptions.ResourceNotFoundException;
 import org.example.eventpro.mapper.EvenementMapper;
 import org.example.eventpro.repository.EvenementRepository;
 import org.example.eventpro.repository.OrganisateurRepository;
@@ -96,6 +97,14 @@ public class EvenementServiceImpl implements EvenementService {
 
     @Override
     @Transactional
+    public EventResponseDTO updateStatut(Long id, StatutEvenement statut) {
+        Evenement evenement = findEntityById(id);
+        evenement.setStatut(statut);
+        return evenementMapper.toDTO(evenement);
+    }
+
+    @Override
+    @Transactional
     public void delete(Long id) {
 
         Evenement evenement = findEntityById(id);
@@ -107,7 +116,7 @@ public class EvenementServiceImpl implements EvenementService {
 
         return evenementRepository.findById(id)
                 .orElseThrow(() ->
-                        new NoSuchElementException("Evenement introuvable")
+                        new ResourceNotFoundException("Evenement introuvable : " + id)
                 );
     }
 

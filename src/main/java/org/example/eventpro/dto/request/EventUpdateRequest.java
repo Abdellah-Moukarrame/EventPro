@@ -3,12 +3,15 @@ package org.example.eventpro.dto.request;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.eventpro.enums.StatutEvenement;
 
 import java.time.Instant;
 
 @Getter
 @Setter
 public class EventUpdateRequest {
+
+    private StatutEvenement statut;
 
     @NotBlank
     private String titre;

@@ -8,6 +8,10 @@ import org.example.eventpro.dto.request.UtilisateurUpdateRequest;
 import org.example.eventpro.dto.response.UtilisateurResponseDTO;
 
 import org.example.eventpro.entity.Client;
+import org.example.eventpro.entity.Organisateur;
+import org.example.eventpro.entity.Administrateur;
+import org.example.eventpro.entity.AgentControle;
+import org.springframework.beans.BeanUtils;
 import org.example.eventpro.entity.Utilisateur;
 
 import org.example.eventpro.exceptions.BusinessException;
@@ -37,6 +41,25 @@ public class UserServiceImpl implements UtilisateurService {
     // 1. REGISTER
     @Override
     public UtilisateurResponseDTO register(RegisterRequest request) {
+        return creerCompte(new Client(), request);
+    }
+
+    @Override
+    public UtilisateurResponseDTO createOrganisateur(RegisterRequest request) {
+        return creerCompte(new Organisateur(), request);
+    }
+
+    @Override
+    public UtilisateurResponseDTO createAdministrateur(RegisterRequest request) {
+        return creerCompte(BeanUtils.instantiateClass(Administrateur.class), request);
+    }
+
+    @Override
+    public UtilisateurResponseDTO createAgentControle(RegisterRequest request) {
+        return creerCompte(BeanUtils.instantiateClass(AgentControle.class), request);
+    }
+
+    private UtilisateurResponseDTO creerCompte(Utilisateur utilisateur, RegisterRequest request) {
 
         // Vérifier si l'email est déjà utilisé
         String email = request.getEmail().trim().toLowerCase(Locale.ROOT);
@@ -46,22 +69,10 @@ public class UserServiceImpl implements UtilisateurService {
             );
         }
 
-        // Créer un client
-        Client client = new Client();
-
-        client.setNom(request.getNom().trim());
-        client.setEmail(email);
-
-        // Ne jamais enregistrer le mot de passe en clair
-        client.setMotDePasse(
-                passwordEncoder.encode(request.getMotDePasse())
-        );
-
-        // Enregistrer dans PostgreSQL
-        Utilisateur saved = enregistrer(client);
-
-        // Convertir l'entité en DTO
-        return utilisateurMapper.toDTO(saved);
+        utilisateur.setNom(request.getNom().trim());
+        utilisateur.setEmail(email);
+        utilisateur.setMotDePasse(passwordEncoder.encode(request.getMotDePasse()));
+        return utilisateurMapper.toDTO(enregistrer(utilisateur));
     }
 
     // 2. FIND BY ID
@@ -81,6 +92,14 @@ public class UserServiceImpl implements UtilisateurService {
 
         return utilisateurRepository.findAll()
                 .stream()
+                .map(utilisateurMapper::toDTO)
+                .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<UtilisateurResponseDTO> findByType(Class<? extends Utilisateur> typeUtilisateur) {
+        return utilisateurRepository.findByTypeUtilisateur(typeUtilisateur).stream()
                 .map(utilisateurMapper::toDTO)
                 .toList();
     }

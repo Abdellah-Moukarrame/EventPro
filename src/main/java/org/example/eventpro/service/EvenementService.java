@@ -2,6 +2,7 @@ package org.example.eventpro.service;
 
 import org.example.eventpro.dto.request.EventCreateRequest;
 import org.example.eventpro.dto.request.EventUpdateRequest;
+import org.example.eventpro.enums.StatutEvenement;
 import org.example.eventpro.dto.response.EventResponseDTO;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public interface EvenementService {
     List<EventResponseDTO> findAll();
 
     EventResponseDTO update(Long id, EventUpdateRequest request);
+    EventResponseDTO updateStatut(Long id, StatutEvenement statut);
 
     void delete(Long id);
 }
