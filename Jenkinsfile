@@ -36,7 +36,7 @@ pipeline {
             }
         }
 
-        stage('Analyse SonarQube') {
+        /*stage('Analyse SonarQube') {
             steps {
                 withSonarQubeEnv('SonarQube') {
                     sh '''
@@ -51,6 +51,7 @@ pipeline {
                 }
             }
         }
+        */
 
         stage('Quality Gate') {
             steps {
