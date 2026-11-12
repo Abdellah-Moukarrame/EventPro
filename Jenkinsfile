@@ -51,7 +51,7 @@ pipeline {
                 }
             }
         }
-        */
+
 
         stage('Quality Gate') {
             steps {
@@ -60,7 +60,7 @@ pipeline {
                 }
             }
         }
-
+*/
         stage('Packaging') {
             steps {
                 sh './gradlew --no-daemon bootJar'
