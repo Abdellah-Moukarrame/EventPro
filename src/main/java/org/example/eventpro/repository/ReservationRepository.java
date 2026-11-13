@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import jakarta.persistence.LockModeType;
+import org.springframework.data.repository.query.Param;
 
 import java.time.Instant;
 import java.util.List;
@@ -55,5 +56,24 @@ public interface ReservationRepository
             select r.client from Reservation r group by r.client order by count(r.client) desc limit 2 
             """)
     List<Client> findTwoMostReservedClient() ;
+
+    // Mise en situation :
+
+    @Query("""
+           select r from Reservation r join r.clients cl 
+           join r.ligne_reservation li 
+           join r.categorie ca 
+           where r.status =:CONFIRMED  
+           and cl.email = :email 
+           and ca.nom = :nomCategorie 
+           and li.quantite >= :quantiteMin
+           
+            """)
+    List<Reservation> findConfirmedReservationWithClientEmail(
+            @Param("email") String email,
+            @Param("nomCategorie") String nomCategorie,
+            @Param("quantiteMin") int quantiteMin
+    );
+
 
 }

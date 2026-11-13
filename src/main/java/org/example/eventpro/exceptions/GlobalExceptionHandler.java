@@ -58,4 +58,18 @@ public class GlobalExceptionHandler {
                         Instant.now()
                 ));
     }
+
+    // Mise en situation :
+    @ExceptionHandler(AucuneReservationTrouveeException.class)
+    public ResponseEntity<ErrorResponse> handleNotFound(
+            AucuneReservationTrouveeException ex
+    ){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ErrorResponse(
+                        404,
+                        ex.getMessage(),
+                        Instant.now()
+                )
+        );
+    }
 }

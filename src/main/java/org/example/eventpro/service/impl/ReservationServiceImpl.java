@@ -17,6 +17,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.*;
 import java.util.*;
+import java.util.stream.Collectors;
+
 import static org.example.eventpro.enums.StatutReservation.*;
 
 @Service
@@ -150,4 +152,11 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public void cancel(Long id) { lifecycle.cancel(id); }
+
+    // Mise en situation :
+    public List<Reservation> findConfirmedReservationWithClientEmail(String email, String nomCategorie, int quantiteMin, String titreEvenement) {
+        List<Reservation> reservations = findConfirmedReservationWithClientEmail(email, nomCategorie, quantiteMin, titreEvenement);
+
+
+    }
 }
