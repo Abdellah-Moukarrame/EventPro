@@ -154,9 +154,12 @@ public class ReservationServiceImpl implements ReservationService {
     public void cancel(Long id) { lifecycle.cancel(id); }
 
     // Mise en situation :
-    public List<Reservation> findConfirmedReservationWithClientEmail(String email, String nomCategorie, int quantiteMin, String titreEvenement) {
-        List<Reservation> reservations = findConfirmedReservationWithClientEmail(email, nomCategorie, quantiteMin, titreEvenement);
-
+    public List<ReservationResponseDTO> findConfirmedReservationWithClientEmail(String email, String nomCategorie, int quantiteMin) {
+        List<Reservation> reservations = findConfirmedReservationWithClientEmail(email, nomCategorie, quantiteMin);
+        if(reservations.isEmpty()){
+            throw new AucuneReservationTrouveeException("aucun res trouver");
+        }
+        return reservations.stream().map(mapper::toDTO).toList() ;
 
     }
 }

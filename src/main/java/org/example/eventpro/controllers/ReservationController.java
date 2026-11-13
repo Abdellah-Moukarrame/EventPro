@@ -49,5 +49,15 @@ public class ReservationController {
         return ResponseEntity.noContent().build();
     }
 
+    // Mise en situation :
+    @GetMapping("/chercher")
+    @Operation(summary = "chercher reservation avec email client et confirmer  ")
+    public List<ReservationResponseDTO> rechercher(
+            @RequestParam String email,
+            @RequestParam String nomCategorie,
+            @RequestParam(defaultValue = "1") int quantiteMin,
+            @RequestParam String titreEvenement) {
+        return reservationService.rechercherReservations(email, nomCategorie, quantiteMin, titreEvenement);
+    }
 
 }

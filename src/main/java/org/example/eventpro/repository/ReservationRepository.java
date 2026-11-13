@@ -1,6 +1,7 @@
 
 package org.example.eventpro.repository;
 
+import org.example.eventpro.dto.response.ReservationResponseDTO;
 import org.example.eventpro.entity.Client;
 import org.example.eventpro.entity.Reservation;
 import org.example.eventpro.enums.StatutReservation;
@@ -69,7 +70,7 @@ public interface ReservationRepository
            and li.quantite >= :quantiteMin
            
             """)
-    List<Reservation> findConfirmedReservationWithClientEmail(
+    List<ReservationResponseDTO> findConfirmedReservationWithClientEmail(
             @Param("email") String email,
             @Param("nomCategorie") String nomCategorie,
             @Param("quantiteMin") int quantiteMin
